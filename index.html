@@ -205,7 +205,10 @@ function irPantalla2() {
 function irPantalla3() {
   document.getElementById('pantalla2').style.display = 'none';
   document.getElementById('pantalla3').style.display = 'block';
-  document.getElementById('contenedor-mensajes').innerHTML = "";
+
+  // Oculta la flecha
+  const flecha = document.querySelector('.flecha');
+  if (flecha) flecha.style.display = 'none';
 }
 
 for (let i = 0; i < 100; i++) {
