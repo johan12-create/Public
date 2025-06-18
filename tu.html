@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Para Mi ...</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: 'Dancing Script', cursive;
+      overflow: hidden;
+    }
+    section {
+      width: 100%;
+      height: 100vh;
+      position: absolute;
+      top: 0; left: 0;
+      display: none;
+    }
+    #pantalla1 {
+      background: black;
+      display: block;
+    }
+    .estrellas {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .estrella {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      animation: parpadeo 2s infinite alternate;
+    }
+    @keyframes parpadeo {
+      from {opacity: 0.2;}
+      to {opacity: 1;}
+    }
+    .titulo {
+      text-align: center;
+      margin-top: 30%;
+      font-size: 3em;
+      color: #ff4dd2;
+      z-index: 2;
+      position: relative;
+    }
+    .flores {
+      position: fixed;
+      top: -50px;
+      font-size: 24px;
+      animation: caer 4s linear;
+      z-index: 2;
+    }
+    @keyframes caer {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+    .boton-inicio {
+      display: block;
+      margin: 2em auto;
+      padding: 12px 30px;
+      background-color: #ff4dd2;
+      color: white;
+      font-size: 1.3em;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: transform 0.1s ease;
+      z-index: 2;
+      position: relative;
+    }
+    .boton-inicio:active {
+      transform: scale(0.95);
+    }
+    #pantalla2 {
+      background-color: #ffcce6;
+      z-index: 10;
+      overflow: hidden;
+      display: none;
+    }
+    .clic-aqui {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 15px 30px;
+      border-radius: 15px;
+      font-size: 1.4em;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 50;
+    }
+    .mensaje {
+      position: absolute;
+      background: white;
+      border: 2px solid black;
+      padding: 12px 18px;
+      border-radius: 10px;
+      animation: aparecer 0.3s ease;
+      font-size: 1em;
+      color: #000;
+      z-index: 45;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+    #contenedor-mensajes {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      z-index: 45;
+      pointer-events: none;
+    }
+    @keyframes aparecer {
+      from {opacity: 0; transform: scale(0.8);}
+      to {opacity: 1; transform: scale(1);}
+    }
+    .emoji-cascada {
+      position: fixed;
+      top: -30px;
+      font-size: 24px;
+      animation: cascada 5s linear;
+      z-index: 15;
+      pointer-events: none;
+    }
+    @keyframes cascada {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+    .flecha {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      font-size: 2em;
+      color: white;
+      cursor: pointer;
+      z-index: 50;
+    }
+    .corazon-final {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 4em;
+      animation: aparecer 0.5s ease;
+      z-index: 55;
+    }
+  </style>
+</head>
+<body>
+
+<section id="pantalla1">
+  <div class="estrellas" id="estrellas"></div>
+  <h1 class="titulo">Bienvenido corazón</h1>
+  <button class="boton-inicio" onclick="irPantalla2()">Iniciar</button>
+</section>
+
+<section id="pantalla2">
+  <div id="contenedor-mensajes"></div>
+  <div class="clic-aqui" onclick="mostrarMensaje()">Clic aquí</div>
+  <div class="flecha" onclick="irPantalla3()">➤</div>
+</section>
+
+<section id="pantalla3" style="background: linear-gradient(#87cefa, #ffffff); display:none;">
+  <div id="nubes-container"></div>
+  <div style="position: absolute; bottom: 60px; left: 20px; color: #FFBF00; font-size: 1.5em;">
+    Nuestros días juntos
+  </div>
+  <div id="contador" style="position: absolute; bottom: 30px; left: 20px; color: #FFBF00; font-size: 1.2em;"></div>
+  <!-- Dentro de la pantalla 3, reemplaza el bloque del poema con este: -->
+<div id="poema" style="position: absolute; top: 20px; right: 20px; color: #FFBF00; font-size: 1.2em; max-width: 40%; text-align: right;">
+  Ojalá la vida nos alcance<br>
+  para compartir sin prisa el tiempo,<br>
+  minutos, horas y mil instantes,<br>
+  entre risas, besos y pasatiempos.<br><br>
+  Que cada día deje un recuerdo,<br>
+  abrazos que abrigan el corazón,<br>
+  y que el reloj, sin ir tan lejos,<br>
+  nos regale más de una ocasión.<br><br>
+  Deseo convivir contigo siempre,<br>
+  mi pequeño sol, mi dulce razón,<br>
+  que nunca falte lo que sentimos...<br>
+  mi pequeño amor, mi pequeño corazón.
+</div>
+
+
+<script>
+function irPantalla2() {
+  document.getElementById('pantalla1').style.display = 'none';
+  document.getElementById('pantalla2').style.display = 'block';
+}
+function irPantalla3() {
+  document.getElementById('pantalla2').style.display = 'none';
+  document.getElementById('pantalla3').style.display = 'block';
+  document.getElementById('contenedor-mensajes').innerHTML = "";
+}
+
+for (let i = 0; i < 100; i++) {
+  let estrella = document.createElement("div");
+  estrella.className = "estrella";
+  estrella.style.top = Math.random() * 100 + "%";
+  estrella.style.left = Math.random() * 100 + "%";
+  estrella.style.animationDelay = Math.random() * 2 + "s";
+  document.getElementById("estrellas").appendChild(estrella);
+}
+
+setInterval(() => {
+  const flor = document.createElement("div");
+  flor.className = "flores";
+  flor.innerText = ["🌸", "🌼", "🌺"][Math.floor(Math.random() * 3)];
+  flor.style.left = Math.random() * 100 + "vw";
+  flor.style.animationDuration = (Math.random() * 2 + 3) + "s";
+  document.body.appendChild(flor);
+  setTimeout(() => flor.remove(), 5000);
+}, 400);
+
+const emojis = ["🌞", "☁️", "🌙", "⭐"];
+setInterval(() => {
+  if (getComputedStyle(document.getElementById("pantalla2")).display !== 'block') return;
+  const emoji = document.createElement("div");
+  emoji.className = "emoji-cascada";
+  emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+  emoji.style.left = Math.random() * 100 + "vw";
+  emoji.style.animationDuration = (Math.random() * 3 + 3) + "s";
+  document.body.appendChild(emoji);
+  setTimeout(() => emoji.remove(), 6000);
+}, 600);
+
+const mensajes = [
+  "Tus ojos brillan más que cualquier estrella.",
+  "Me gustas",
+  "Eres una mujer hermosa",
+  "Me encanta cómo sonríes cuando no sabes que te veo.",
+  "Me cae re mal",
+  "Tu risa es mi sonido favorito.",
+  "Nosotros",
+  "Que ganas de abrazarte",
+  "Eres como un lugar seguro.",
+  "Admiro tu fuerza y tu dulzura.",
+  "Siempre haces que quiera ser mejor.",
+  "Tu forma de pensar es fascinante.",
+  "Mi niña hermosa",
+  "Verte es como ver algo hermoso sin buscarlo.",
+  "Tu presencia hace todo más bonito."
+];
+let indiceMensaje = 0;
+function mostrarMensaje() {
+  if (indiceMensaje >= mensajes.length) {
+    const corazon = document.createElement("div");
+    corazon.className = "corazon-final";
+    corazon.textContent = "❤️";
+    document.body.appendChild(corazon);
+    setTimeout(() => corazon.remove(), 1500);
+    indiceMensaje = 0;
+    return;
+  }
+  const msg = document.createElement("div");
+  msg.className = "mensaje";
+  msg.innerText = mensajes[indiceMensaje++];
+  msg.style.top = (window.innerHeight * 0.2 + Math.random() * window.innerHeight * 0.5) + "px";
+  msg.style.left = Math.random() * (window.innerWidth - 200) + "px";
+  document.getElementById("contenedor-mensajes").appendChild(msg);
+  setTimeout(() => { if (msg.parentNode) msg.remove(); }, 7000);
+}
+
+function crearNube() {
+  if (getComputedStyle(document.getElementById("pantalla3")).display !== 'block') return;
+  const nube = document.createElement("div");
+  nube.innerText = "☁️";
+  nube.style.position = "absolute";
+  nube.style.fontSize = Math.random() * 20 + 25 + "px";
+  nube.style.top = Math.random() * 80 + "vh";
+  nube.style.left = "-50px";
+  nube.style.zIndex = "0";
+  const velocidad = Math.random() * 10 + 10;
+  document.getElementById("nubes-container").appendChild(nube);
+  let pos = -50;
+  const mover = setInterval(() => {
+    pos += 1;
+    nube.style.left = pos + "px";
+    if (pos > window.innerWidth + 50) {
+      clearInterval(mover);
+      nube.remove();
+    }
+  }, velocidad);
+}
+setInterval(crearNube, 1500);
+
+function actualizarContador() {
+  const inicio = new Date("2025-05-05T00:00:00");
+  const ahora = new Date();
+  const diff = ahora - inicio;
+  const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutos = Math.floor((diff / (1000 * 60)) % 60);
+  const segundos = Math.floor((diff / 1000) % 60);
+  document.getElementById("contador").innerText = `${dias} días, ${horas}h ${minutos}m ${segundos}s`;
+}
+setInterval(actualizarContador, 1000);
+actualizarContador();
+</script>
+
+</body>
+</html>
